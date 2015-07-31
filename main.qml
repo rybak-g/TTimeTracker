@@ -7,7 +7,7 @@ import QtQuick.Controls.Styles 1.2
 ApplicationWindow {
     id: window
 
-    property int baseHeight: 35
+    property int baseHeight: 40
     property int baseWidth: 480
     property int maxHeight: 400
 
@@ -135,8 +135,6 @@ ApplicationWindow {
             background: Rectangle {
                 implicitWidth: 100
                 implicitHeight: 25
-                border.width: control.activeFocus ? 2 : 1
-                border.color: "#888"
                 gradient: Gradient {
                     GradientStop { position: 0 ; color: (control.pressed || control.checked) ? "red" : "green" }
                     GradientStop { position: 1 ; color: (control.pressed || control.checked) ? "red" : "green" }
@@ -168,10 +166,66 @@ ApplicationWindow {
 
         height: window.baseHeight
         width: 80
-        color: "#999"
+        color: "#666"
         anchors {
             left: parent.left
             top: parent.top
+        }
+
+        property int days;
+        property int hours;
+        property int minutes;
+        property int seconds;
+        property int milliseconds;
+
+        Text {
+            id: hourMinutesText
+            anchors.centerIn: parent
+            color: "white"
+            text: (parent.hours < 10 ? "0"+parent.hours : parent.hours) + ":" + (parent.minutes < 10 ? "0"+parent.minutes : parent.minutes) + ":"
+            font.pixelSize: 14
+        }
+        Text {
+            id: daysText
+            text: parent.days > 0 ? parent.days : ""
+            color: "white"
+            font.pixelSize: 10
+            anchors {
+                left: parent.left
+                right: parent.right
+                top: parent.top
+                bottom: hourMinutesText.top
+            }
+            verticalAlignment: Text.AlignVCenter
+            horizontalAlignment: Text.AlignHCenter
+        }
+        Text {
+            id: secondsText
+            text: parent.seconds < 10 ? "0"+parent.seconds : parent.seconds
+            color: "white"
+            anchors {
+                left: parent.left
+                top: hourMinutesText.bottom
+                bottom: parent.bottom
+            }
+            width: parent.width/2
+            verticalAlignment: Text.AlignVCenter
+            horizontalAlignment: Text.AlignHCenter
+            font.pixelSize: 10
+        }
+        Text {
+            id: millisecondsText
+            text: parent.milliseconds < 100 ? ((parent.milliseconds < 10 ? "00" : "0")+parent.milliseconds) : parent.milliseconds
+            color: "white"
+            anchors {
+                right: parent.right
+                top: hourMinutesText.bottom
+                bottom: parent.bottom
+            }
+            width: parent.width/2
+            verticalAlignment: Text.AlignVCenter
+            horizontalAlignment: Text.AlignHCenter
+            font.pixelSize: 10
         }
     }
     TextInput {
@@ -183,5 +237,22 @@ ApplicationWindow {
             left: timerContainer.right
         }
         height: window.baseHeight
+    }
+    Timer {
+        id: timer
+
+        property double time: 0;
+
+        interval: 100
+        repeat: true
+        running: startStopButton.checked
+        onTriggered: {
+            time += interval;
+            timerContainer.days = time / (86400000);
+            timerContainer.hours = (time / (3600000)) % 24;
+            timerContainer.minutes = (time / (60000)) % 60;
+            timerContainer.seconds = time / (1000);
+            timerContainer.milliseconds = time % 1000;
+        }
     }
 }
