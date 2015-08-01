@@ -17,7 +17,13 @@ ApplicationWindow {
     x: Screen.width/2 - width/2
     visible: true
     flags: Qt.FramelessWindowHint | Qt.WindowStaysOnTopHint
+    color: "transparent"
 
+    ///////////////////////////////////////////////////////////////
+    ///////////////////////////////////////////////////////////////
+    //
+    ///////////////////////////////////////////////////////////////
+    ///////////////////////////////////////////////////////////////
     Rectangle {
         id: anchorContainer
 
@@ -33,22 +39,32 @@ ApplicationWindow {
 
             spacing: 5
             anchors.centerIn: parent
+            ///////////////////////////////////////////////////////////////
+            ///////////////////////////////////////////////////////////////
+            //
+            ///////////////////////////////////////////////////////////////
+            ///////////////////////////////////////////////////////////////
             Rectangle {
-                color: "white"
+                color: "#DDD"
                 height: 3
                 width: 3
             }
             Rectangle {
-                color: "white"
+                color: "#DDD"
                 height: 3
                 width: 3
             }
             Rectangle {
-                color: "white"
+                color: "#DDD"
                 height: 3
                 width: 3
             }
         }
+        ///////////////////////////////////////////////////////////////
+        ///////////////////////////////////////////////////////////////
+        //
+        ///////////////////////////////////////////////////////////////
+        ///////////////////////////////////////////////////////////////
         MouseArea {
             id: dragArea
 
@@ -70,7 +86,11 @@ ApplicationWindow {
             }
         }
     }
-
+    ///////////////////////////////////////////////////////////////
+    ///////////////////////////////////////////////////////////////
+    //
+    ///////////////////////////////////////////////////////////////
+    ///////////////////////////////////////////////////////////////
     Button {
         id: dropdownButton
 
@@ -121,6 +141,11 @@ ApplicationWindow {
             }
         ]
     }
+    ///////////////////////////////////////////////////////////////
+    ///////////////////////////////////////////////////////////////
+    //
+    ///////////////////////////////////////////////////////////////
+    ///////////////////////////////////////////////////////////////
     Button {
         id: startStopButton
 
@@ -161,6 +186,11 @@ ApplicationWindow {
             }
         ]
     }
+    ///////////////////////////////////////////////////////////////
+    ///////////////////////////////////////////////////////////////
+    //
+    ///////////////////////////////////////////////////////////////
+    ///////////////////////////////////////////////////////////////
     Rectangle {
         id: timerContainer
 
@@ -182,7 +212,9 @@ ApplicationWindow {
             id: hourMinutesText
             anchors.centerIn: parent
             color: "white"
-            text: (parent.hours < 10 ? "0"+parent.hours : parent.hours) + ":" + (parent.minutes < 10 ? "0"+parent.minutes : parent.minutes) + ":"
+            text: (parent.hours < 10 ? "0"+parent.hours : parent.hours) + ":" +
+                  (parent.minutes < 10 ? "0"+parent.minutes : parent.minutes) + ":" +
+                  (parent.seconds < 10 ? "0"+parent.seconds : parent.seconds)
             font.pixelSize: 14
         }
         Text {
@@ -200,44 +232,59 @@ ApplicationWindow {
             horizontalAlignment: Text.AlignHCenter
         }
         Text {
-            id: secondsText
-            text: parent.seconds < 10 ? "0"+parent.seconds : parent.seconds
-            color: "white"
-            anchors {
-                left: parent.left
-                top: hourMinutesText.bottom
-                bottom: parent.bottom
-            }
-            width: parent.width/2
-            verticalAlignment: Text.AlignVCenter
-            horizontalAlignment: Text.AlignHCenter
-            font.pixelSize: 10
-        }
-        Text {
             id: millisecondsText
             text: parent.milliseconds < 100 ? ((parent.milliseconds < 10 ? "00" : "0")+parent.milliseconds) : parent.milliseconds
             color: "white"
             anchors {
                 right: parent.right
                 top: hourMinutesText.bottom
+                left: parent.left
                 bottom: parent.bottom
             }
-            width: parent.width/2
             verticalAlignment: Text.AlignVCenter
             horizontalAlignment: Text.AlignHCenter
             font.pixelSize: 10
         }
     }
-    TextInput {
-        id: taskInput
+    ///////////////////////////////////////////////////////////////
+    ///////////////////////////////////////////////////////////////
+    //
+    ///////////////////////////////////////////////////////////////
+    ///////////////////////////////////////////////////////////////
+    Rectangle {
+        id: taskInputContainer
 
         anchors {
             top: parent.top
             right: startStopButton.left
             left: timerContainer.right
         }
+        color: "#DDD"
         height: window.baseHeight
+        ///////////////////////////////////////////////////////////////
+        ///////////////////////////////////////////////////////////////
+        //
+        ///////////////////////////////////////////////////////////////
+        ///////////////////////////////////////////////////////////////
+        TextInput {
+            id: taskInput
+            anchors{
+                fill: parent
+                margins: 10
+            }
+            verticalAlignment: Text.AlignVCenter
+            height: window.baseHeight
+            color: "#666"
+            font {
+                pixelSize: height
+            }
+        }
     }
+    ///////////////////////////////////////////////////////////////
+    ///////////////////////////////////////////////////////////////
+    //
+    ///////////////////////////////////////////////////////////////
+    ///////////////////////////////////////////////////////////////
     Timer {
         id: timer
 
