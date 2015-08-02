@@ -4,7 +4,7 @@
 #include <exception>
 #include <iostream>
 
-#include "traymenu.h"
+#include "TrayMenu.h"
 
 int main(int argc, char *argv[])
 {

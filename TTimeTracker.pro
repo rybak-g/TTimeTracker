@@ -3,7 +3,7 @@ TEMPLATE = app
 QT += qml quick widgets
 
 SOURCES += main.cpp \
-    traymenu.cpp \
+    TrayMenu.cpp
 
 RESOURCES += qml.qrc
 
@@ -14,4 +14,12 @@ QML_IMPORT_PATH =
 include(deployment.pri)
 
 HEADERS += \
-    traymenu.h \
+    DlLoader.hpp \
+    DlManager.hpp \
+    IServiceProvider.hpp \
+    Task.h \
+    TTask.hpp \
+    Dll.h \
+    TSetting.hpp \
+    TrayMenu.h \
+    StringSetting.h

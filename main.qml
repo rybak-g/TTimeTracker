@@ -45,29 +45,29 @@ ApplicationWindow {
             ///////////////////////////////////////////////////////////////
             ///////////////////////////////////////////////////////////////
             Rectangle {
-                color: "#DDD"
+                color: "#DDDDDD"
                 height: 3
                 width: 3
-                radius: 3
+                radius: 1
             }
             Rectangle {
-                color: "#DDD"
+                color: "#DDDDDD"
                 height: 3
                 width: 3
-                radius: 3
+                radius: 1
             }
             Rectangle {
-                color: "#DDD"
+                color: "#DDDDDD"
                 height: 3
                 width: 3
-                radius: 3
+                radius: 1
             }
         }
         ///////////////////////////////////////////////////////////////
         ///////////////////////////////////////////////////////////////
         //
         ///////////////////////////////////////////////////////////////
-        ///////////////////////////////////////////////////////////////
+        ///////////////////////////////////////////////////////////////f
         MouseArea {
             id: dragArea
 
@@ -100,7 +100,6 @@ ApplicationWindow {
         anchors {
             right: anchorContainer.left
             top: parent.top
-            rightMargin: -2
         }
         width: baseHeight
         height: baseHeight
@@ -137,16 +136,16 @@ ApplicationWindow {
             }
         ]
         Image {
-            id: cogImage
+            id: dropdownButtonImage
 
             anchors.centerIn: parent
-            height: parent.height/2
-            width: parent.width/2
+            height: parent.height*0.5
+            width: parent.height*0.5
             sourceSize {
-                height: 512
-                width: 512
+                height: 128
+                width: 128
             }
-
+            fillMode: Image.PreserveAspectFit
             source: (dropdownButton.checked || dropdownButton.pressed) ? "qrc:/icon/lnr-cog-444.svg" : "qrc:/icon/lnr-cog-ddd.svg"
         }
     }
@@ -159,6 +158,7 @@ ApplicationWindow {
         id: startStopButton
 
         anchors {
+            rightMargin: -1
             right: dropdownButton.left
             top: parent.top
         }
@@ -167,33 +167,35 @@ ApplicationWindow {
         checkable: true
         style: ButtonStyle {
             background: Rectangle {
-                implicitWidth: 100
-                implicitHeight: 25
-                gradient: Gradient {
-                    GradientStop { position: 0 ; color: (control.pressed || control.checked) ? "red" : "green" }
-                    GradientStop { position: 1 ; color: (control.pressed || control.checked) ? "red" : "green" }
+                color: "#444444"
+                border {
+                    color: "#444444"
+                    width: 1
+                }
+                SequentialAnimation on color {
+                    id: animation
+
+                    alwaysRunToEnd: true
+                    running: control.checked
+                    loops: Animation.Infinite
+                    PropertyAnimation { to: "#963821"; easing.type: Easing.OutQuad; duration: 1000 }
+                    PropertyAnimation { to: "#444444"; easing.type: Easing.InQuad; duration: 1000 }
                 }
             }
         }
-        state: "stopped"
-        states: [
-            State {
-                name: "started"
-                PropertyChanges {
-                    target: dropdownButton
-                    text: "STOP"
-                }
-                when: checked
-            },
-            State {
-                name: "stopped"
-                PropertyChanges {
-                    target: dropdownButton
-                    text: "START"
-                }
-                when: !checked
+        Image {
+            id: startStopButtonImage
+
+            anchors.centerIn: parent
+            height: parent.height*0.4
+            width: parent.height*0.4
+            sourceSize {
+                height: 128
+                width: 128
             }
-        ]
+            source: (startStopButton.checked) ? "qrc:/icon/stop-button-ddd.svg" : "qrc:/icon/play-button-ddd.svg"
+            fillMode: Image.PreserveAspectFit
+        }
     }
     ///////////////////////////////////////////////////////////////
     ///////////////////////////////////////////////////////////////
@@ -220,16 +222,16 @@ ApplicationWindow {
         Text {
             id: hourMinutesText
             anchors.centerIn: parent
-            color: "#DDD"
+            color: "#DDDDDD"
             text: (parent.hours < 10 ? "0"+parent.hours : parent.hours) + ":" +
                   (parent.minutes < 10 ? "0"+parent.minutes : parent.minutes) + ":" +
                   (parent.seconds < 10 ? "0"+parent.seconds : parent.seconds)
-            font.pixelSize: 14
+            font.pixelSize: parent.height*0.4
         }
         Text {
             id: daysText
             text: parent.days > 0 ? parent.days : ""
-            color: "#DDD"
+            color: "#DDDDDD"
             font.pixelSize: 10
             anchors {
                 left: parent.left
@@ -266,6 +268,7 @@ ApplicationWindow {
         anchors {
             top: parent.top
             right: startStopButton.left
+            rightMargin: -1
             left: timerContainer.right
         }
         border {
@@ -291,7 +294,7 @@ ApplicationWindow {
             verticalAlignment: Text.AlignVCenter
             color: "#444"
             font {
-                pixelSize: parent.height/2
+                pixelSize: parent.height*0.4
             }
         }
     }
@@ -304,7 +307,6 @@ ApplicationWindow {
         id: timer
 
         property double time: 0;
-
         interval: 1000
         repeat: true
         running: startStopButton.checked

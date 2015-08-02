@@ -1,5 +1,5 @@
 #include <QApplication>
-#include "traymenu.h"
+#include "TrayMenu.h"
 
 TrayMenu::TrayMenu(QObject * root) : QObject(root),  m_menu(), m_trayIcon(root), m_programHidden(false)
 {
