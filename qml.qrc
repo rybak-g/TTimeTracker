@@ -4,5 +4,17 @@
     </qresource>
     <qresource prefix="/icon">
         <file>tray_icon.png</file>
+        <file>lnr-cog-444.svg</file>
+        <file>lnr-cog-black.svg</file>
+        <file>lnr-cog-white.svg</file>
+        <file>lnr-cog-ddd.svg</file>
+        <file>play-button-444.svg</file>
+        <file>play-button-black.svg</file>
+        <file>play-button-ddd.svg</file>
+        <file>play-button-white.svg</file>
+        <file>stop-button-444.svg</file>
+        <file>stop-button-black.svg</file>
+        <file>stop-button-ddd.svg</file>
+        <file>stop-button-white.svg</file>
     </qresource>
 </RCC>

@@ -17,7 +17,7 @@ ApplicationWindow {
     x: Screen.width/2 - width/2
     visible: true
     flags: Qt.FramelessWindowHint | Qt.WindowStaysOnTopHint
-    color: "transparent"
+    color: "#00BBBBBB"
 
     ///////////////////////////////////////////////////////////////
     ///////////////////////////////////////////////////////////////
@@ -28,7 +28,7 @@ ApplicationWindow {
         id: anchorContainer
 
         width: 12
-        color: "gray"
+        color: "#444"
         height: baseHeight
         anchors {
             right: parent.right
@@ -48,16 +48,19 @@ ApplicationWindow {
                 color: "#DDD"
                 height: 3
                 width: 3
+                radius: 3
             }
             Rectangle {
                 color: "#DDD"
                 height: 3
                 width: 3
+                radius: 3
             }
             Rectangle {
                 color: "#DDD"
                 height: 3
                 width: 3
+                radius: 3
             }
         }
         ///////////////////////////////////////////////////////////////
@@ -97,19 +100,20 @@ ApplicationWindow {
         anchors {
             right: anchorContainer.left
             top: parent.top
+            rightMargin: -2
         }
         width: baseHeight
         height: baseHeight
         checkable: true
         style: ButtonStyle {
             background: Rectangle {
-                implicitWidth: 100
-                implicitHeight: 25
-                border.width: control.activeFocus ? 2 : 1
-                border.color: "#888"
+                border {
+                    width: 1
+                    color: "#444"
+                }
                 gradient: Gradient {
-                    GradientStop { position: 0 ; color: (control.pressed || control.checked) ? "#ccc" : "#eee" }
-                    GradientStop { position: 1 ; color: (control.pressed || control.checked) ? "#aaa" : "#ccc" }
+                    GradientStop { position: 0 ; color: (control.pressed || control.checked) ? "#DDD" : "#444" }
+                    GradientStop { position: 1 ; color: (control.pressed || control.checked) ? "#DDD" : "#444" }
                 }
             }
         }
@@ -123,10 +127,6 @@ ApplicationWindow {
                     target: window
                     height: baseHeight
                 }
-                PropertyChanges {
-                    target: dropdownButton
-                    text: "V"
-                }
             },
             State {
                 name: "toggled"
@@ -134,12 +134,21 @@ ApplicationWindow {
                     target: window
                     height: maxHeight
                 }
-                PropertyChanges {
-                    target: dropdownButton
-                    text: "^"
-                }
             }
         ]
+        Image {
+            id: cogImage
+
+            anchors.centerIn: parent
+            height: parent.height/2
+            width: parent.width/2
+            sourceSize {
+                height: 512
+                width: 512
+            }
+
+            source: (dropdownButton.checked || dropdownButton.pressed) ? "qrc:/icon/lnr-cog-444.svg" : "qrc:/icon/lnr-cog-ddd.svg"
+        }
     }
     ///////////////////////////////////////////////////////////////
     ///////////////////////////////////////////////////////////////
@@ -196,7 +205,7 @@ ApplicationWindow {
 
         height: window.baseHeight
         width: 80
-        color: "#666"
+        color: "#444"
         anchors {
             left: parent.left
             top: parent.top
@@ -211,7 +220,7 @@ ApplicationWindow {
         Text {
             id: hourMinutesText
             anchors.centerIn: parent
-            color: "white"
+            color: "#DDD"
             text: (parent.hours < 10 ? "0"+parent.hours : parent.hours) + ":" +
                   (parent.minutes < 10 ? "0"+parent.minutes : parent.minutes) + ":" +
                   (parent.seconds < 10 ? "0"+parent.seconds : parent.seconds)
@@ -220,7 +229,7 @@ ApplicationWindow {
         Text {
             id: daysText
             text: parent.days > 0 ? parent.days : ""
-            color: "white"
+            color: "#DDD"
             font.pixelSize: 10
             anchors {
                 left: parent.left
@@ -231,20 +240,20 @@ ApplicationWindow {
             verticalAlignment: Text.AlignVCenter
             horizontalAlignment: Text.AlignHCenter
         }
-        Text {
-            id: millisecondsText
-            text: parent.milliseconds < 100 ? ((parent.milliseconds < 10 ? "00" : "0")+parent.milliseconds) : parent.milliseconds
-            color: "white"
-            anchors {
-                right: parent.right
-                top: hourMinutesText.bottom
-                left: parent.left
-                bottom: parent.bottom
-            }
-            verticalAlignment: Text.AlignVCenter
-            horizontalAlignment: Text.AlignHCenter
-            font.pixelSize: 10
-        }
+//        Text {
+//            id: millisecondsText
+//            text: parent.milliseconds < 100 ? ((parent.milliseconds < 10 ? "00" : "0")+parent.milliseconds) : parent.milliseconds
+//            color: "#DDD"
+//            anchors {
+//                right: parent.right
+//                top: hourMinutesText.bottom
+//                left: parent.left
+//                bottom: parent.bottom
+//            }
+//            verticalAlignment: Text.AlignVCenter
+//            horizontalAlignment: Text.AlignHCenter
+//            font.pixelSize: 10
+//        }
     }
     ///////////////////////////////////////////////////////////////
     ///////////////////////////////////////////////////////////////
@@ -259,7 +268,12 @@ ApplicationWindow {
             right: startStopButton.left
             left: timerContainer.right
         }
-        color: "#DDD"
+        border {
+            width: 1
+            color: "#444"
+        }
+        clip: true
+        color: "transparent"
         height: window.baseHeight
         ///////////////////////////////////////////////////////////////
         ///////////////////////////////////////////////////////////////
@@ -270,13 +284,14 @@ ApplicationWindow {
             id: taskInput
             anchors{
                 fill: parent
-                margins: 10
+                topMargin: 2
+                leftMargin: 10
+                rightMargin: 10
             }
             verticalAlignment: Text.AlignVCenter
-            height: window.baseHeight
-            color: "#666"
+            color: "#444"
             font {
-                pixelSize: height
+                pixelSize: parent.height/2
             }
         }
     }
@@ -290,7 +305,7 @@ ApplicationWindow {
 
         property double time: 0;
 
-        interval: 100
+        interval: 1000
         repeat: true
         running: startStopButton.checked
         onTriggered: {
@@ -298,8 +313,14 @@ ApplicationWindow {
             timerContainer.days = time / (86400000);
             timerContainer.hours = (time / (3600000)) % 24;
             timerContainer.minutes = (time / (60000)) % 60;
-            timerContainer.seconds = time / (1000);
-            timerContainer.milliseconds = time % 1000;
+            timerContainer.seconds = time / (1000) % 60;
+//            timerContainer.milliseconds = time % 1000;
+        }
+        function start() {
+            running = true;
+        }
+        function stop() {
+            running = false
         }
     }
 }
