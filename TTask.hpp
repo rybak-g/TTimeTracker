@@ -1,7 +1,7 @@
 #ifndef TTask_H
 # define TTask_H
 
-# include <string>
+# include <memory>
 
 template<typename _ID_TYPE, typename _NAME_TYPE, typename _DESCRIPTION_TYPE>
 class TTask {
@@ -9,6 +9,8 @@ public:
     typedef _ID_TYPE IdType;
     typedef _NAME_TYPE NameType;
     typedef _DESCRIPTION_TYPE DescriptionType;
+    typedef TTask<_ID_TYPE, _NAME_TYPE, _DESCRIPTION_TYPE> Type;
+    typedef std::unique_ptr<Task> TaskPtr;
 
 private:
     TTask() {}
@@ -31,14 +33,15 @@ public:
 
     virtual ~TTask() {}
 
-    const IdType & id() const {
+    const IdType & getId() const {
         return this->id;
     }
+
     void setId(const IdType & id) {
         this->id = id;
     }
 
-    const NameType & name() const {
+    const NameType & getName() const {
         return this->name;
     }
 

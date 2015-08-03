@@ -3,7 +3,8 @@ TEMPLATE = app
 QT += qml quick widgets
 
 SOURCES += main.cpp \
-    TrayMenu.cpp
+    TrayMenu.cpp \
+    TimerEvent.cpp
 
 RESOURCES += qml.qrc
 
@@ -22,4 +23,5 @@ HEADERS += \
     Dll.h \
     TSetting.hpp \
     TrayMenu.h \
-    StringSetting.h
+    StringSetting.h \
+    TimerEvent.h

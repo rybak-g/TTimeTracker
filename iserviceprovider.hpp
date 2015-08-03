@@ -7,6 +7,7 @@
 
 # include "Task.h"
 # include "StringSetting.h"
+# include "TimerEvent.h"
 
 class IServiceProvider {
 public:
@@ -30,7 +31,8 @@ public:
     virtual bool setSettings(SettingListPtr) = 0;
     virtual std::unique_ptr<SettingList> getSettings() = 0;
 
-    virtual bool timerStarted() = 0;
+    virtual bool timerStarted(std::unique_ptr<Timer::Event>) = 0;
+    virtual bool timerStopped(std::unique_ptr<Timer::Event>) = 0;
 };
 
 #endif // ISERVICEPROVIDER_HPP

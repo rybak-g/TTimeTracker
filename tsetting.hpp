@@ -20,15 +20,23 @@ public:
     typedef _VALUE_TYPE ValueType;
 
 public:
-    TSetting(const KeyType & key, const ValueType & value): key(key), value(value){}
+    TSetting(const KeyType & key, const ValueType & value): key(key), value(value) {}
     virtual ~TSetting() {}
 
     const KeyType & key() const {
         return this->key;
     }
 
-    const ValueType & type() const {
+    const ValueType & value() const {
         return this->value;
+    }
+
+    void setKey(const KeyType & key) {
+        this->key = key;
+    }
+
+    void setValue(const ValueType & value) {
+        this->value = value;
     }
 
 private:

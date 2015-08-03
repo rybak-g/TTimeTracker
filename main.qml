@@ -230,7 +230,7 @@ ApplicationWindow {
         }
         Text {
             id: daysText
-            text: parent.days > 0 ? parent.days : ""
+            text: parent.days > 0 ? (((parent.days < 10) ? "00" : (parent.days < 100) ? "0" : "")) + parent.days : ""
             color: "#DDDDDD"
             font.pixelSize: 10
             anchors {
@@ -242,20 +242,6 @@ ApplicationWindow {
             verticalAlignment: Text.AlignVCenter
             horizontalAlignment: Text.AlignHCenter
         }
-//        Text {
-//            id: millisecondsText
-//            text: parent.milliseconds < 100 ? ((parent.milliseconds < 10 ? "00" : "0")+parent.milliseconds) : parent.milliseconds
-//            color: "#DDD"
-//            anchors {
-//                right: parent.right
-//                top: hourMinutesText.bottom
-//                left: parent.left
-//                bottom: parent.bottom
-//            }
-//            verticalAlignment: Text.AlignVCenter
-//            horizontalAlignment: Text.AlignHCenter
-//            font.pixelSize: 10
-//        }
     }
     ///////////////////////////////////////////////////////////////
     ///////////////////////////////////////////////////////////////
@@ -285,7 +271,7 @@ ApplicationWindow {
         ///////////////////////////////////////////////////////////////
         TextInput {
             id: taskInput
-            anchors{
+            anchors {
                 fill: parent
                 topMargin: 2
                 leftMargin: 10
@@ -316,7 +302,6 @@ ApplicationWindow {
             timerContainer.hours = (time / (3600000)) % 24;
             timerContainer.minutes = (time / (60000)) % 60;
             timerContainer.seconds = time / (1000) % 60;
-//            timerContainer.milliseconds = time % 1000;
         }
         function start() {
             running = true;
