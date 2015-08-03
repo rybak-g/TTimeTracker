@@ -16,7 +16,7 @@ TrayMenu::TrayMenu(QObject * root) : QObject(root),  m_menu(), m_trayIcon(root),
     this->m_menu.addAction(m_closeAction);
 
     m_trayIcon.setContextMenu(&m_menu);
-    m_trayIcon.setIcon(QIcon(":/icon/tray_icon.png"));
+    m_trayIcon.setIcon(QIcon(":/tray/tray/tray_icon.png"));
     m_trayIcon.connect(&m_trayIcon, SIGNAL(activated(QSystemTrayIcon::ActivationReason)), this, SLOT(onActivated(QSystemTrayIcon::ActivationReason)));
     connect(this, SIGNAL(show()), root, SLOT(showNormal()));
     connect(this, SIGNAL(hide()), root, SLOT(hide()));

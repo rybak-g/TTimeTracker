@@ -1,0 +1,24 @@
+<RCC>
+    <qresource prefix="/"/>
+    <qresource prefix="/cog">
+        <file>cog/lnr-cog-444.svg</file>
+        <file>cog/lnr-cog-black.svg</file>
+        <file>cog/lnr-cog-ddd.svg</file>
+        <file>cog/lnr-cog-white.svg</file>
+    </qresource>
+    <qresource prefix="/play">
+        <file>play/play-button-444.svg</file>
+        <file>play/play-button-black.svg</file>
+        <file>play/play-button-ddd.svg</file>
+        <file>play/play-button-white.svg</file>
+    </qresource>
+    <qresource prefix="/stop">
+        <file>stop/stop-button-444.svg</file>
+        <file>stop/stop-button-black.svg</file>
+        <file>stop/stop-button-ddd.svg</file>
+        <file>stop/stop-button-white.svg</file>
+    </qresource>
+    <qresource prefix="/tray">
+        <file>tray/tray_icon.png</file>
+    </qresource>
+</RCC>

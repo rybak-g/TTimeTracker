@@ -12,7 +12,7 @@ namespace Settings {
     } SupportedValueType;
 }
 
-template<typename _VALUE_TYPE, SupportedValueType _VALUE_ENUM>
+template<typename _VALUE_TYPE, Settings::SupportedValueType _VALUE_ENUM>
 class TSetting {
 public:
     typedef std::string KeyType;
@@ -23,11 +23,11 @@ public:
     TSetting(const KeyType & key, const ValueType & value): key(key), value(value) {}
     virtual ~TSetting() {}
 
-    const KeyType & key() const {
+    const KeyType &getKey() const {
         return this->key;
     }
 
-    const ValueType & value() const {
+    const ValueType & getValue() const {
         return this->value;
     }
 

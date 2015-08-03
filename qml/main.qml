@@ -146,7 +146,7 @@ ApplicationWindow {
                 width: 128
             }
             fillMode: Image.PreserveAspectFit
-            source: (dropdownButton.checked || dropdownButton.pressed) ? "qrc:/icon/lnr-cog-444.svg" : "qrc:/icon/lnr-cog-ddd.svg"
+            source: (dropdownButton.checked || dropdownButton.pressed) ? "qrc:/cog/cog/lnr-cog-444.svg" : "qrc:/cog/cog/lnr-cog-ddd.svg"
         }
     }
     ///////////////////////////////////////////////////////////////
@@ -193,7 +193,7 @@ ApplicationWindow {
                 height: 128
                 width: 128
             }
-            source: (startStopButton.checked) ? "qrc:/icon/stop-button-ddd.svg" : "qrc:/icon/play-button-ddd.svg"
+            source: (startStopButton.checked) ? "qrc:/stop/stop/stop-button-ddd.svg" : "qrc:/play/play/play-button-ddd.svg"
             fillMode: Image.PreserveAspectFit
         }
     }

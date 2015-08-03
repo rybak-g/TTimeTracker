@@ -10,7 +10,7 @@ public:
     typedef _NAME_TYPE NameType;
     typedef _DESCRIPTION_TYPE DescriptionType;
     typedef TTask<_ID_TYPE, _NAME_TYPE, _DESCRIPTION_TYPE> Type;
-    typedef std::unique_ptr<Task> TaskPtr;
+    typedef std::shared_ptr<Type> TaskPtr;
 
 private:
     TTask() {}

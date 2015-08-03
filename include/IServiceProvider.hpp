@@ -14,7 +14,7 @@ public:
     typedef Settings::StringSetting Setting;
     typedef std::unique_ptr<Setting> SettingPtr;
     typedef std::list<Setting> SettingList;
-    typedef std::unique_ptr<SettingsList> SettingListPtr;
+    typedef std::unique_ptr<SettingList> SettingListPtr;
     typedef std::list<Task> TaskList;
     typedef std::unique_ptr<TaskList> TaskListPtr;
 
@@ -25,14 +25,14 @@ public:
     virtual bool init() = 0;
     virtual bool cleanup() = 0;
 
-    virtual bool setTasks(std::unique_ptr<TaskList>) = 0;
-    virtual std::unique_ptr<TaskList> getTasks() = 0;
+    virtual bool setTasks(TaskListPtr) = 0;
+    virtual TaskListPtr getTasks() = 0;
 
     virtual bool setSettings(SettingListPtr) = 0;
-    virtual std::unique_ptr<SettingList> getSettings() = 0;
+    virtual SettingListPtr getSettings() = 0;
 
-    virtual bool timerStarted(std::unique_ptr<Timer::Event>) = 0;
-    virtual bool timerStopped(std::unique_ptr<Timer::Event>) = 0;
+    virtual bool timerStarted(Timer::EventPtr) = 0;
+    virtual bool timerStopped(Timer::EventPtr) = 0;
 };
 
 #endif // ISERVICEPROVIDER_HPP

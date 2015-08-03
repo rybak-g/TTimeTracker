@@ -4,7 +4,6 @@ namespace Timer {
 
     Event::Event(Task::TaskPtr task, Timer::TimerEventType eventType, const TimeStamp & startedTime, const TimeStamp & stopedTime)
         : task(task), eventType(eventType), startedTimeStamp(startedTime), stoppedTimeStamp(stopedTime) {
-
     }
 
     const TimeStamp & Event::getStartedTimeStamp() const {
@@ -19,7 +18,7 @@ namespace Timer {
         return this->eventType;
     }
 
-    const Task::TaskPtr getTask() const {
+    Task::TaskPtr Event::getTask() const {
         return this->task;
     }
 }

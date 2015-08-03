@@ -14,11 +14,11 @@ namespace Timer {
     class Event
     {
     public:
-        explicit Event(Task::TaskPtr task, Timer::TimerEventType eventType, TimeStamp startedTime, TimeStamp stopedTime = (TimeStamp)-1);
+        explicit Event(Task::TaskPtr task, Timer::TimerEventType eventType, const TimeStamp & startedTime, const TimeStamp & stopedTime = (TimeStamp)-1);
 
         const TimeStamp & getStartedTimeStamp() const;
         const TimeStamp & getStoppedTimeStamp() const;
-        const Task * getTask() const;
+        Task::TaskPtr getTask() const;
         TimerEventType getEventType() const;
 
     private:
@@ -27,6 +27,8 @@ namespace Timer {
         TimeStamp startedTimeStamp;
         TimeStamp stoppedTimeStamp;
     };
+
+    typedef std::unique_ptr<Event> EventPtr;
 }
 
 

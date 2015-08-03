@@ -4,12 +4,4 @@
 #  define __declspec(dllexport)
 # endif
 
-namespace DL
-{
-    enum Type
-    {
-        ServiceProviderPlugin
-    };
-}
-
 #endif // !DLL_HH_

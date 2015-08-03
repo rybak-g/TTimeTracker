@@ -2,11 +2,13 @@ TEMPLATE = app
 
 QT += qml quick widgets
 
-SOURCES += main.cpp \
-    TrayMenu.cpp \
-    TimerEvent.cpp
+SOURCES += \
+    sources/main.cpp \
+    sources/TrayMenu.cpp \
+    sources/TimerEvent.cpp
 
-RESOURCES += qml.qrc
+RESOURCES += qml/qml.qrc \
+    icons/icons.qrc
 
 # Additional import path used to resolve QML modules in Qt Creator's code model
 QML_IMPORT_PATH =
@@ -14,14 +16,17 @@ QML_IMPORT_PATH =
 # Default rules for deployment.
 include(deployment.pri)
 
+INCLUDEPATH += \
+    include
+
 HEADERS += \
-    DlLoader.hpp \
-    DlManager.hpp \
-    IServiceProvider.hpp \
-    Task.h \
-    TTask.hpp \
-    Dll.h \
-    TSetting.hpp \
-    TrayMenu.h \
-    StringSetting.h \
-    TimerEvent.h
+    include/DlLoader.hpp \
+    include/DlManager.hpp \
+    include/IServiceProvider.hpp \
+    include/Task.h \
+    include/TTask.hpp \
+    include/Dll.h \
+    include/TSetting.hpp \
+    include/TrayMenu.h \
+    include/StringSetting.h \
+    include/TimerEvent.h
