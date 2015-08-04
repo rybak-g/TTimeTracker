@@ -11,8 +11,8 @@ extern "C"
         return ("Phabricator");
     }
 
-    IServiceProvider __declspec(dllexport) * getInstance()
+    ServiceProvider::Interface __declspec(dllexport) * getInstance()
     {
-        return (new PhabricatorServiceProvider);
+        return (new ServiceProvider::Phabricator);
     }
 }

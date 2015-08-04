@@ -2,6 +2,8 @@ TEMPLATE = app
 
 QT += qml quick widgets
 
+QMAKE_CXXFLAGS += -std=gnu++0x -D_DEBUG
+
 SOURCES += \
     sources/main.cpp \
     sources/TrayMenu.cpp \
@@ -29,4 +31,5 @@ HEADERS += \
     include/TSetting.hpp \
     include/TrayMenu.h \
     include/StringSetting.h \
-    include/TimerEvent.h
+    include/TimerEvent.h \
+    include/QServiceProvider.h

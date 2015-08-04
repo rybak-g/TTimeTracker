@@ -8,6 +8,8 @@ QT       += network
 
 QT       -= gui
 
+QMAKE_CXXFLAGS += -std=gnu++0x
+
 TARGET = Phabricator
 TEMPLATE = lib
 

@@ -8,14 +8,16 @@
 #ifndef DLMANAGER_HPP_
 # define DLMANAGER_HPP_
 # ifdef _WIN32
-#  include <filesystem>
+//#  include <filesystem>
 # else
 #  include <dirent.h>
 # endif
 # include <algorithm>
 # include <sstream>
 # include <exception>
+# include <list>
 # include <unordered_map>
+
 # include "DlLoader.hpp"
 
 template<typename _KEY_, class _INSTANCE_ = void>
@@ -24,39 +26,39 @@ class DlManager
 public:
     typedef DlLoader<_INSTANCE_, _KEY_> Loader;
     typedef std::unordered_map<_KEY_, Loader *> PluginList;
+    typedef std::list<_KEY_> KeyList;
 
 private:
     PluginList _plugins;
+    KeyList _keys;
 
 public:
     DlManager() {}
 
     ~DlManager() {
-         for (auto pair : _plugins)
-         {
-             delete pair.second;
-         }
+        clear();
     }
 
     bool loadFromFile(std::string const& fileName) {
         Loader *tmp = new Loader;
 
-        if (!tmp->load(fileName))
-        {
+        if (!tmp->load(fileName)) {
 # ifdef _DEBUG
-            std::cout << "Error loading [" << fileName << "] : " << tmp->getLastError() << std::endl;
+            std::cout << "Error: loading [" << fileName << "] : " << tmp->getLastError() << std::endl;
 # endif
             delete tmp;
             return false;
         }
-        if (_plugins.find(tmp->getId()) == _plugins.end())
-        {
+        if (_plugins.find(tmp->getId()) == _plugins.end()) {
             _plugins.emplace(tmp->getId(), tmp);
-        }
-        else
-        {
+            _keys.push_back(tmp->getId());
 # ifdef _DEBUG
-            std::cout << "Warning loading [" << fileName << "] : library already loaded" << std::endl;
+            std::cout << "Info: loading [" << fileName << "] : " << tmp->getId() << std::endl;
+# endif
+        }
+        else {
+# ifdef _DEBUG
+            std::cout << "Warning: loading [" << fileName << "] : library already loaded" << std::endl;
 # endif
             delete tmp;
         }
@@ -70,16 +72,14 @@ public:
         WIN32_FIND_DATAA fd;
         HANDLE handle = INVALID_HANDLE_VALUE;
 
-        if (dirPath.length() > (MAX_PATH - 7))
-        {
+        if (dirPath.length() > (MAX_PATH - 7)) {
 #  ifdef _DEBUG
-            std::cout << "Error loading from directory [" << dirPath << "] : path too ling" << std::endl;
+            std::cout << "Error: loading from directory [" << dirPath << "] : path too long" << std::endl;
 #  endif
             return (false);
         }
         str = dirPath + "/*.dll";
-        if ((handle = FindFirstFileA(str.c_str(), &fd)) == INVALID_HANDLE_VALUE)
-        {
+        if ((handle = FindFirstFileA(str.c_str(), &fd)) == INVALID_HANDLE_VALUE) {
 #  ifdef _DEBUG
             std::cout << "Warning: loading from directory [" << dirPath << "] : no dynamic library found" << std::endl;
 #  endif
@@ -95,8 +95,7 @@ public:
         DIR *d;
         struct dirent *dir;
 
-        if (!(d = opendir(dirPath.c_str())))
-        {
+        if (!(d = opendir(dirPath.c_str()))) {
 #  ifdef _DEBUG
             std::cout << "Error loading from directory [" << dirPath << "] : cannot opendirectory" << std::endl;
 #  endif
@@ -129,14 +128,17 @@ public:
     T* getInstance(_KEY_ const& key, void *arg = nullptr) const {
         const typename PluginList::const_iterator &ite = _plugins.find(key);
 
-        if (ite == _plugins.end())
-        {
+        if (ite == _plugins.end()) {
 # ifdef _DEBUG
-            std::cout << "Error getting instance: not found" << std::endl;
+            std::cout << "Error: getting instance: not found" << std::endl;
 # endif
             return nullptr;
         }
         return (reinterpret_cast<T *>(ite->second->getInstance(arg)));
+    }
+
+    const KeyList & getKeys() const {
+        return this->_keys;
     }
 
     bool unload(_KEY_ const& key) {
@@ -146,7 +148,17 @@ public:
             return (false);
         delete ite->second;
         _plugins.erase(ite);
+        _keys.remove(key);
         return (true);
+    }
+
+    bool clear() {
+        for (auto pair : _plugins) {
+            delete pair.second;
+        }
+        _plugins.clear();
+        _keys.clear();
+        return true;
     }
 };
 
