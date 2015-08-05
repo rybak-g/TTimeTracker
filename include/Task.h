@@ -1,10 +1,10 @@
 #ifndef TASK_H
 # define TASK_H
 
-# include <string>
+# include <QString>
 # include "TTask.hpp"
 
-typedef TTask<std::string, std::string, std::string> Task;
+typedef TTask<QString, QString, QString> Task;
 
 #endif // TASK_H
 

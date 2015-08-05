@@ -7,7 +7,8 @@ QMAKE_CXXFLAGS += -std=gnu++0x -D_DEBUG
 SOURCES += \
     sources/main.cpp \
     sources/TrayMenu.cpp \
-    sources/TimerEvent.cpp
+    sources/TimerEvent.cpp \
+    sources/QServiceProvider.cpp
 
 RESOURCES += qml/qml.qrc \
     icons/icons.qrc
