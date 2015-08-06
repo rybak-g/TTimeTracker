@@ -6,18 +6,21 @@
 
 #include "TrayMenu.h"
 #include "IServiceProvider.hpp"
-#include "DlManager.hpp"
+#include "QServiceProvider.h"
 
 
 int main(int argc, char *argv[])
 {
     QApplication app(argc, argv);
     QQmlApplicationEngine engine;
-    DlManager<const char *, ServiceProvider::Interface> manager;
+
+    QCoreApplication::setOrganizationName("TTimeTracker");
+    QCoreApplication::setApplicationName("TimeTracker");
+    QCoreApplication::setApplicationVersion("0.1");
 
     engine.load(QUrl(QStringLiteral("qrc:/main.qml")));
-    manager.loadFromDir((QCoreApplication::applicationDirPath()+"/plugins").toStdString());
 
+    qmlRegisterType<ServiceProvider::QmlWrapper>("PluginManager", 1, 0, "PluginManager");
     try {
         TrayMenu * tm = new TrayMenu(engine.rootObjects().at(0));
         (void)tm;

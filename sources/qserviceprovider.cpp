@@ -6,11 +6,12 @@
 
 namespace ServiceProvider {
 
-    QmlWrapper::QmlWrapper(Interface * sp, QQuickItem *root)
+    QmlWrapper::QmlWrapper(QQuickItem *root)
         : QQuickItem(root), _sp(sp) {
         if (_sp) {
             throw std::runtime_error("the service profider interface provided to the qmlwrapper cannot be null");
         }
+        _manager.loadFromDir((QCoreApplication::applicationDirPath()+"/plugins").toStdString());
         init();
     }
 

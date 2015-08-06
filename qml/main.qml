@@ -3,6 +3,7 @@ import QtQuick.Controls 1.3
 import QtQuick.Window 2.2
 import QtQuick.Dialogs 1.2
 import QtQuick.Controls.Styles 1.2
+import PluginManager 1.0
 
 ApplicationWindow {
     id: window
@@ -308,6 +309,13 @@ ApplicationWindow {
         }
         function stop() {
             running = false
+        }
+    }
+    PluginManager {
+        id: manager
+
+        Component.onCompleted: {
+            console.log(getTasks());
         }
     }
 }
