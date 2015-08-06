@@ -314,8 +314,7 @@ ApplicationWindow {
     PluginManager {
         id: manager
 
-        Component.onCompleted: {
-            console.log(getTasks());
-        }
+        pluginDirectory: "plugins"
+        onPluginDirectoryChanged: refreshPluginList();
     }
 }

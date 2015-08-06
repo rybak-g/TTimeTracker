@@ -18,9 +18,9 @@ int main(int argc, char *argv[])
     QCoreApplication::setApplicationName("TimeTracker");
     QCoreApplication::setApplicationVersion("0.1");
 
+    qmlRegisterType<ServiceProvider::QmlWrapper>("PluginManager", 1, 0, "PluginManager");
     engine.load(QUrl(QStringLiteral("qrc:/main.qml")));
 
-    qmlRegisterType<ServiceProvider::QmlWrapper>("PluginManager", 1, 0, "PluginManager");
     try {
         TrayMenu * tm = new TrayMenu(engine.rootObjects().at(0));
         (void)tm;

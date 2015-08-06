@@ -34,3 +34,5 @@ HEADERS += \
     include/StringSetting.h \
     include/TimerEvent.h \
     include/QServiceProvider.h
+
+linux: LIBS += -ldl

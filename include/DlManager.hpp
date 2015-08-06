@@ -65,7 +65,7 @@ public:
         return true;
     }
 
-    bool loadFromDir(std::string const& dirPath) {
+    bool loadFromDir(const std::string & dirPath) {
         std::string str;
 
 # ifdef _WIN32
