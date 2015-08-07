@@ -314,7 +314,11 @@ ApplicationWindow {
     PluginManager {
         id: manager
 
-        pluginDirectory: "plugins"
-        onPluginDirectoryChanged: refreshPluginList();
+        pluginDirectory: "C:/"
+        Component.onCompleted: {
+            manager.refreshPluginList();
+            manager.loadServiceProvider("Phabricator");
+            manager.getTasks();
+        }
     }
 }

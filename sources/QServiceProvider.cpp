@@ -7,7 +7,7 @@
 namespace ServiceProvider {
 
     QmlWrapper::QmlWrapper(QQuickItem *root)
-        : QQuickItem(root) {
+        : QQuickItem(root), _sp(0) {
     }
 
     QmlWrapper::QmlWrapper(const QmlWrapper & other)
@@ -79,12 +79,27 @@ namespace ServiceProvider {
         return this->_pluginDirectory;
     }
 
-    bool QmlWrapper::setPluginDirectory(const QString &path) {
-        this->_pluginDirectory = path;
+    bool QmlWrapper::loadServiceProvider(const QString & providerId) {
+        if (_sp) {
+            _sp->cleanup();
+        }
+        if (!(_sp = _manager.getInstance<ServiceProvider::Interface>(providerId.toStdString().c_str()))) {
+            return false;
+        }
+        return true;
+    }
+
+    bool QmlWrapper::setPluginDirectory(const QString & path) {
+        if (_pluginDirectory != path) {
+            this->_pluginDirectory = path;
+            qDebug() << "setPluginDirectory(): " << path;
+            emit pluginDirectoryChanged();
+        }
         return true;
     }
 
     bool QmlWrapper::refreshPluginList() {
+        qDebug() << "refreshPluginList()";
         if (this->_sp) {
             _sp->cleanup();
         }

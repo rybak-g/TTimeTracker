@@ -2,6 +2,8 @@
 # define QSERVICEPROVIDER
 
 # include <QQuickItem>
+# include <QJsonArray>
+
 # include "IServiceProvider.hpp"
 # include "DlManager.hpp"
 
@@ -23,7 +25,7 @@ namespace ServiceProvider {
         bool init();
         bool cleanup();
 
-        QJsonArray getTasks();
+        Q_INVOKABLE QJsonArray getTasks();
 
         bool setSettings(QJsonArray);
         QJsonArray getSettings();
@@ -34,8 +36,7 @@ namespace ServiceProvider {
         bool setPluginDirectory(const QString & path);
         const QString & getPluginDirectory() const;
 
-        bool loadServiceProvider(const QString &);
-        bool loadServiceProviders();
+        Q_INVOKABLE bool loadServiceProvider(const QString &);
 
         Q_INVOKABLE bool refreshPluginList();
 

@@ -117,7 +117,7 @@ public:
 # endif
     }
 
-    const Loader* getLoader(_KEY_ const& key) const {
+    const Loader* getLoader(_KEY_ key) const {
         const typename PluginList::const_iterator &ite = _plugins.find(key);
         if (ite == _plugins.end())
             return nullptr;
@@ -125,7 +125,7 @@ public:
     }
 
     template<typename T>
-    T* getInstance(_KEY_ const& key, void *arg = nullptr) const {
+    T* getInstance(_KEY_ key, void *arg = nullptr) const {
         const typename PluginList::const_iterator &ite = _plugins.find(key);
 
         if (ite == _plugins.end()) {
