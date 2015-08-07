@@ -314,7 +314,7 @@ ApplicationWindow {
     PluginManager {
         id: manager
 
-        pluginDirectory: "C:/"
+        pluginDirectory: "./"
         Component.onCompleted: {
             manager.refreshPluginList();
             manager.loadServiceProvider("Phabricator");

@@ -35,4 +35,7 @@ HEADERS += \
     include/TimerEvent.h \
     include/QServiceProvider.h
 
+OTHER_FILES += \
+    qml/main.qml
+
 linux: LIBS += -ldl
