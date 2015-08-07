@@ -47,7 +47,7 @@ namespace ServiceProvider {
 
     private:
         Interface *_sp;
-        DlManager<const char *, Interface> _manager;
+        DlManager<std::string, Interface> _manager;
         QString _pluginDirectory;
         QString _lastError;
     };
