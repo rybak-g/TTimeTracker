@@ -13,11 +13,13 @@ namespace ServiceProvider {
     class Interface {
     public:
         typedef Settings::StringSetting Setting;
-        typedef std::unique_ptr<Setting> SettingPtr;
+        typedef std::shared_ptr<Setting> SettingPtr;
         typedef std::list<Setting> SettingList;
-        typedef std::unique_ptr<SettingList> SettingListPtr;
+        typedef std::shared_ptr<SettingList> SettingListPtr;
         typedef std::list<Task> TaskList;
-        typedef std::unique_ptr<TaskList> TaskListPtr;
+        typedef std::shared_ptr<TaskList> TaskListPtr;
+
+        typedef void (*getTasksCallback)(TaskListPtr);
 
     public:
         virtual ~Interface() {}
@@ -28,6 +30,7 @@ namespace ServiceProvider {
 
         virtual bool setTasks(TaskListPtr) = 0;
         virtual TaskListPtr getTasks() = 0;
+        virtual void getTasksAsync(getTasksCallback) = 0;
 
         virtual bool setSettings(SettingListPtr) = 0;
         virtual SettingListPtr getSettings() = 0;
