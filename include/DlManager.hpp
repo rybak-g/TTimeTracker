@@ -44,7 +44,8 @@ public:
 
         if (!tmp->load(fileName)) {
 # ifdef _DEBUG
-            std::cout << "Error: loading [" << fileName << "] : " << tmp->getLastError() << std::endl;
+            std::cerr << "Error: loading [" << fileName << "] : " << tmp->getLastError() << std::endl;
+
 # endif
             delete tmp;
             return false;

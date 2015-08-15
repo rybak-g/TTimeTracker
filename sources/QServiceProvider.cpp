@@ -59,6 +59,17 @@ namespace ServiceProvider {
         return qmlList;
     }
 
+    void QmlWrapper::onTaskListReady(Interface::TaskListPtr) {
+        emit taskListChanged();
+    }
+
+    void QmlWrapper::getTasksAsync() {
+        if (_sp) {
+            qDebug("calling async tasks getter");
+            _sp->getTasksAsync(this);
+        }
+    }
+
     bool QmlWrapper::setSettings(QJsonArray) {
         return true;
     }

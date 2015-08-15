@@ -2,7 +2,9 @@ TEMPLATE = app
 
 QT += qml quick widgets
 
-QMAKE_CXXFLAGS += -std=gnu++0x -D_DEBUG
+DEFINES += _DEBUG
+
+#QMAKE_CXXFLAGS += -std=gnu++0x -D_DEBUG
 
 SOURCES += \
     sources/main.cpp \

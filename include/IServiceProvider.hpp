@@ -4,6 +4,7 @@
 # include <string>
 # include <list>
 # include <memory>
+# include <QObject>
 
 # include "Task.h"
 # include "StringSetting.h"
@@ -11,6 +12,7 @@
 
 namespace ServiceProvider {
     class Interface {
+
     public:
         typedef Settings::StringSetting Setting;
         typedef std::shared_ptr<Setting> SettingPtr;
@@ -30,7 +32,7 @@ namespace ServiceProvider {
 
         virtual bool setTasks(TaskListPtr) = 0;
         virtual TaskListPtr getTasks() = 0;
-        virtual void getTasksAsync(getTasksCallback) = 0;
+        virtual void getTasksAsync(QObject *) = 0;
 
         virtual bool setSettings(SettingListPtr) = 0;
         virtual SettingListPtr getSettings() = 0;

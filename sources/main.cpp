@@ -1,5 +1,6 @@
 #include <QApplication>
 #include <QQmlApplicationEngine>
+#include <QTime>
 
 #include <exception>
 #include <iostream>
@@ -8,9 +9,41 @@
 #include "IServiceProvider.hpp"
 #include "QServiceProvider.h"
 
+void myMessageOutput(QtMsgType type, const QMessageLogContext &context, const QString &msg)
+{
+#ifndef _DEBUG
+    Q_UNUSED(context);
+#endif
+    QByteArray localMsg = msg.toLocal8Bit();
+    std::cerr << QTime::currentTime().toString("[hh:mm:ss.zzz] ").toStdString();
+    switch (type) {
+    case QtDebugMsg:
+        std::cerr << "[Debug]   > ";
+        break;
+    case QtInfoMsg:
+        std::cerr << "[Info]    > ";
+        break;
+    case QtWarningMsg:
+        std::cerr << "[Warning] > ";
+        break;
+    case QtCriticalMsg:
+        std::cerr << "[Critical]> ";
+        break;
+    case QtFatalMsg:
+        std::cerr << "[Fatal]   > ";
+        abort();
+    }
+    std::cerr << localMsg.data();
+#ifdef _DEBUG
+    std::cerr << " (" << context.file << ":" << context.line << ", " << context.function << ")" << std::endl;
+#else
+    std::cerr << std::endl;
+#endif
+}
 
 int main(int argc, char *argv[])
 {
+    qInstallMessageHandler(myMessageOutput);
     QApplication app(argc, argv);
     QQmlApplicationEngine engine;
 

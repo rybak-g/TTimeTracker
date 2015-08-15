@@ -3,6 +3,7 @@
 
 # include <QQuickItem>
 # include <QJsonArray>
+# include <QJsonObject>
 
 # include "IServiceProvider.hpp"
 # include "DlManager.hpp"
@@ -16,7 +17,6 @@ namespace ServiceProvider {
 
     public:
         explicit QmlWrapper(QQuickItem *root = 0);
-        Interface * getServiceProvider();
         QmlWrapper(const QmlWrapper & other);
         QmlWrapper &operator=(const QmlWrapper & other);
         virtual ~QmlWrapper();
@@ -25,13 +25,16 @@ namespace ServiceProvider {
         bool init();
         bool cleanup();
 
+        Interface * getServiceProvider();
+
         Q_INVOKABLE QJsonArray getTasks();
+        Q_INVOKABLE void getTasksAsync();
 
-        bool setSettings(QJsonArray);
-        QJsonArray getSettings();
+        Q_INVOKABLE bool setSettings(QJsonArray);
+        Q_INVOKABLE QJsonArray getSettings();
 
-        bool timerStarted(QJsonObject);
-        bool timerStopped(QJsonObject);
+        Q_INVOKABLE bool timerStarted(QJsonObject);
+        Q_INVOKABLE bool timerStopped(QJsonObject);
 
         bool setPluginDirectory(const QString & path);
         const QString & getPluginDirectory() const;
@@ -40,7 +43,11 @@ namespace ServiceProvider {
 
         Q_INVOKABLE bool refreshPluginList();
 
+    public slots:
+        void onTaskListReady(Interface::TaskListPtr);
+
     signals:
+        void taskListChanged(void);
         void pluginDirectoryChanged(void);
         void pluginLoadedSuccessfully(void);
         void errorOccured(const QString &);
