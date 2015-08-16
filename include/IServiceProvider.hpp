@@ -11,6 +11,8 @@
 # include "TimerEvent.h"
 
 namespace ServiceProvider {
+    class QmlWrapper;
+
     class Interface {
 
     public:
@@ -32,7 +34,7 @@ namespace ServiceProvider {
 
         virtual bool setTasks(TaskListPtr) = 0;
         virtual TaskListPtr getTasks() = 0;
-        virtual void getTasksAsync(QObject *) = 0;
+        virtual void getTasksAsync(ServiceProvider::QmlWrapper *) = 0;
 
         virtual bool setSettings(SettingListPtr) = 0;
         virtual SettingListPtr getSettings() = 0;

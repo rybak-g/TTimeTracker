@@ -1,15 +1,7 @@
-//
-//
-//
-//
-//
-//
-
 #ifndef DLLOADER_HPP_
 # define DLLOADER_HPP_
 # include <stdexcept>
 # include <string>
-# include <iostream>
 # ifdef _WIN32
 #  include <Windows.h>
 #  include <Winbase.h>
@@ -17,6 +9,10 @@ typedef HINSTANCE LibraryHandler;
 # else
 #  include <dlfcn.h>
 typedef void * LibraryHandler;
+#endif
+#ifdef _DEBUG
+# include <QApplication>
+# include <iostream>
 #endif
 
 template<class _T_, typename _KEY_>
@@ -45,7 +41,7 @@ private:
 #endif
         {
 #ifdef _DEBUG
-            std::cerr << ("Error unloading library: " + fileName) << std::endl;
+            qCritical() << "error unloading library: " << fileName.c_str() << ": " << GetLastError();
 #endif
         }
     }
@@ -82,7 +78,7 @@ public:
 #endif
         if (!idGetter || !instanceGetter) {
             this->unload();
-            lastError = "cannot find the entry point ";
+            lastError = "cannot find the entry point";
 #ifndef _WIN32
             lastError += " : ";
             lastError += dlerror();

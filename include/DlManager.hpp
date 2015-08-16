@@ -1,10 +1,3 @@
-//
-//
-//
-//
-//
-//
-
 #ifndef DLMANAGER_HPP_
 # define DLMANAGER_HPP_
 # ifdef _WIN32
@@ -44,8 +37,7 @@ public:
 
         if (!tmp->load(fileName)) {
 # ifdef _DEBUG
-            std::cerr << "Error: loading [" << fileName << "] : " << tmp->getLastError() << std::endl;
-
+            qCritical() << "error loading [" << fileName.c_str() << "] : " << tmp->getLastError().c_str();
 # endif
             delete tmp;
             return false;
@@ -54,12 +46,12 @@ public:
             _plugins.emplace(tmp->getId(), tmp);
             _keys.push_back(tmp->getId());
 # ifdef _DEBUG
-            std::cout << "Info: loading [" << fileName << "] : " << tmp->getId() << std::endl;
+            qInfo() << "loading [" << fileName.c_str() << "]";
 # endif
         }
         else {
 # ifdef _DEBUG
-            std::cout << "Warning: loading [" << fileName << "] : library already loaded" << std::endl;
+            qWarning() << "loading [" << fileName.c_str() << "] : library already loaded";
 # endif
             delete tmp;
         }
@@ -75,14 +67,14 @@ public:
 
         if (dirPath.length() > (MAX_PATH - 7)) {
 #  ifdef _DEBUG
-            std::cout << "Error: loading from directory [" << dirPath << "] : path too long" << std::endl;
+            qCritical() << "loading from directory [" << dirPath.c_str() << "] : path too long";
 #  endif
             return (false);
         }
         str = dirPath + "/*.dll";
         if ((handle = FindFirstFileA(str.c_str(), &fd)) == INVALID_HANDLE_VALUE) {
 #  ifdef _DEBUG
-            std::cout << "Warning: loading from directory [" << dirPath << "] : no dynamic library found" << std::endl;
+            qWarning() << "loading from directory [" << dirPath.c_str() << "] : no dynamic library found";
 #  endif
             return (false);
         }
@@ -131,7 +123,7 @@ public:
 
         if (ite == _plugins.end()) {
 # ifdef _DEBUG
-            std::cout << "Error: getting instance: not found" << std::endl;
+            qCritical() << "error getting instance: not found";
 # endif
             return nullptr;
         }

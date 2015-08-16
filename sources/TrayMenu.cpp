@@ -23,6 +23,10 @@ TrayMenu::TrayMenu(QObject * root) : QObject(root),  m_menu(), m_trayIcon(root),
     m_trayIcon.show();
 }
 
+TrayMenu::~TrayMenu() {
+
+}
+
 void TrayMenu::toggleProgramHidden() {
     m_programHidden = !m_programHidden;
     if (m_programHidden) {

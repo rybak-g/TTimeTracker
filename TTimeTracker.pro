@@ -4,7 +4,7 @@ QT += qml quick widgets
 
 DEFINES += _DEBUG
 
-#QMAKE_CXXFLAGS += -std=gnu++0x -D_DEBUG
+CONFIG += c++11
 
 SOURCES += \
     sources/main.cpp \

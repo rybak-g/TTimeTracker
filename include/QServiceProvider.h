@@ -26,21 +26,15 @@ namespace ServiceProvider {
         bool cleanup();
 
         Interface * getServiceProvider();
-
-        Q_INVOKABLE QJsonArray getTasks();
-        Q_INVOKABLE void getTasksAsync();
-
-        Q_INVOKABLE bool setSettings(QJsonArray);
-        Q_INVOKABLE QJsonArray getSettings();
-
-        Q_INVOKABLE bool timerStarted(QJsonObject);
-        Q_INVOKABLE bool timerStopped(QJsonObject);
-
         bool setPluginDirectory(const QString & path);
         const QString & getPluginDirectory() const;
-
+        Q_INVOKABLE QJsonArray getTasks();
+        Q_INVOKABLE void getTasksAsync();
+        Q_INVOKABLE bool setSettings(QJsonArray);
+        Q_INVOKABLE QJsonArray getSettings();
+        Q_INVOKABLE bool timerStarted(QJsonObject);
+        Q_INVOKABLE bool timerStopped(QJsonObject);
         Q_INVOKABLE bool loadServiceProvider(const QString &);
-
         Q_INVOKABLE bool refreshPluginList();
 
     public slots:
@@ -57,6 +51,7 @@ namespace ServiceProvider {
         DlManager<std::string, Interface> _manager;
         QString _pluginDirectory;
         QString _lastError;
+        QJsonArray * _qmlList;
     };
 }
 

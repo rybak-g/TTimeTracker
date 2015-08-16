@@ -53,13 +53,21 @@ namespace ServiceProvider {
                 QJsonObject qmlTask;
                 qmlTask["name"] = QJsonValue(task.getName());
                 qmlList.push_back(qmlTask);
-                std::cout << task.getName().toStdString() << std::endl;
+                qDebug() << task.getName();
             }
         }
         return qmlList;
     }
 
-    void QmlWrapper::onTaskListReady(Interface::TaskListPtr) {
+    void QmlWrapper::onTaskListReady(Interface::TaskListPtr p) {
+        Q_UNUSED(p);
+        qDebug() << "onTaskListReady";
+         for (Task task: *p) {
+            QJsonObject qmlTask;
+            qmlTask["name"] = QJsonValue(task.getName());
+            qmlList.push_back(qmlTask);
+            qDebug() << task.getName();
+        }
         emit taskListChanged();
     }
 

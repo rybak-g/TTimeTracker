@@ -11,6 +11,7 @@ Q_OBJECT
 
 public:
     explicit TrayMenu(QObject *root);
+    ~TrayMenu();
 
 signals:
     void hide();

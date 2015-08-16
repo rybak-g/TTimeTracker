@@ -1,6 +1,7 @@
 #include <QApplication>
 #include <QQmlApplicationEngine>
 #include <QTime>
+#include <QException>
 
 #include <exception>
 #include <iostream>
@@ -31,14 +32,18 @@ void myMessageOutput(QtMsgType type, const QMessageLogContext &context, const QS
         break;
     case QtFatalMsg:
         std::cerr << "[Fatal]   > ";
-        abort();
+        break;
     }
     std::cerr << localMsg.data();
-#ifdef _DEBUG
-    std::cerr << " (" << context.file << ":" << context.line << ", " << context.function << ")" << std::endl;
-#else
+    if (context.file) {
+        std::cerr << " (" << (context.file ? context.file : "no_file")
+                  << ":" << context.line
+                  << ", " << (context.function ? context.function : "no_function") << ")";
+    }
     std::cerr << std::endl;
-#endif
+    if (type == QtFatalMsg) {
+        abort();
+    }
 }
 
 int main(int argc, char *argv[])
@@ -55,13 +60,14 @@ int main(int argc, char *argv[])
     engine.load(QUrl(QStringLiteral("qrc:/main.qml")));
 
     try {
-        TrayMenu * tm = new TrayMenu(engine.rootObjects().at(0));
-        (void)tm;
+        TrayMenu tm(engine.rootObjects().at(0));
+        Q_UNUSED(tm);
+        return app.exec();
+    } catch (const QException & e) {
+        qFatal(e.what());
     } catch (const std::exception & e) {
-        std::cerr << e.what() << std::endl;
+        qFatal(e.what());
     } catch (...) {
-        std::cerr << "An unexpected error occured, exiting" << std::endl;
-        return 1;
+        qFatal("An unexpected error occured, exiting");
     }
-    return app.exec();
 }
