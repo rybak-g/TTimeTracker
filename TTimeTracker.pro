@@ -2,7 +2,7 @@ TEMPLATE = app
 
 QT += qml quick widgets
 
-DEFINES += _DEBUG
+#DEFINES += _DEBUG
 
 CONFIG += c++11
 

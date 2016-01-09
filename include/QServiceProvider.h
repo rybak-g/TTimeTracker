@@ -1,7 +1,6 @@
 #ifndef QSERVICEPROVIDER
 # define QSERVICEPROVIDER
 
-# include <QQuickItem>
 # include <QJsonArray>
 # include <QJsonObject>
 
@@ -10,13 +9,13 @@
 
 namespace ServiceProvider {
 
-    class QmlWrapper: public QQuickItem {
+    class QmlWrapper: public QObject {
         Q_OBJECT
 
         Q_PROPERTY(QString pluginDirectory READ getPluginDirectory WRITE setPluginDirectory NOTIFY pluginDirectoryChanged)
 
     public:
-        explicit QmlWrapper(QQuickItem *root = 0);
+        explicit QmlWrapper(QObject *root = 0);
         QmlWrapper(const QmlWrapper & other);
         QmlWrapper &operator=(const QmlWrapper & other);
         virtual ~QmlWrapper();

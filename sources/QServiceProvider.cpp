@@ -6,12 +6,14 @@
 
 namespace ServiceProvider {
 
-    QmlWrapper::QmlWrapper(QQuickItem *root)
-        : QQuickItem(root), _sp(0) {
+    QmlWrapper::QmlWrapper(QObject *root)
+        : QObject(root)
+        , _sp(0)
+        , _qmlList(nullptr){
     }
 
     QmlWrapper::QmlWrapper(const QmlWrapper & other)
-        : QQuickItem(other.parentItem()){
+        : QQuickItem(other.parentItem()) {
         this->_sp = other._sp;
         setPluginDirectory(other._pluginDirectory);
     }
@@ -62,10 +64,14 @@ namespace ServiceProvider {
     void QmlWrapper::onTaskListReady(Interface::TaskListPtr p) {
         Q_UNUSED(p);
         qDebug() << "onTaskListReady";
-         for (Task task: *p) {
+        if (_qmlList) {
+            delete _qmlList;
+            _qmlList = new QJsonArray;
+        }
+        for (Task task: *p) {
             QJsonObject qmlTask;
             qmlTask["name"] = QJsonValue(task.getName());
-            qmlList.push_back(qmlTask);
+            _qmlList->append(qmlTask);
             qDebug() << task.getName();
         }
         emit taskListChanged();

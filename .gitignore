@@ -27,3 +27,4 @@
 *.out
 *.app
 TTimeTracker.pro.*
+build/
