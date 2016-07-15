@@ -7,9 +7,10 @@
 # include "IServiceProvider.hpp"
 # include "DlManager.hpp"
 
-namespace ServiceProvider {
-
-    class QmlWrapper: public QObject {
+namespace Providers
+{
+    class QmlWrapper: public QObject
+    {
         Q_OBJECT
 
         Q_PROPERTY(QString pluginDirectory READ getPluginDirectory WRITE setPluginDirectory NOTIFY pluginDirectoryChanged)
@@ -24,7 +25,7 @@ namespace ServiceProvider {
         bool init();
         bool cleanup();
 
-        Interface * getServiceProvider();
+        Providers::Interface * getServiceProvider();
         bool setPluginDirectory(const QString & path);
         const QString & getPluginDirectory() const;
         Q_INVOKABLE QJsonArray getTasks();
@@ -37,7 +38,7 @@ namespace ServiceProvider {
         Q_INVOKABLE bool refreshPluginList();
 
     public slots:
-        void onTaskListReady(Interface::TaskListPtr);
+        void onTaskListReady(Providers::Interface::TaskListPtr);
 
     signals:
         void taskListChanged(void);
@@ -46,8 +47,8 @@ namespace ServiceProvider {
         void errorOccured(const QString &);
 
     private:
-        Interface *_sp;
-        DlManager<std::string, Interface> _manager;
+        Providers::Interface *_sp;
+        DlManager<std::string, Providers::Interface> _manager;
         QString _pluginDirectory;
         QString _lastError;
         QJsonArray * _qmlList;

@@ -1,4 +1,6 @@
+
 #include <QApplication>
+#include <QtQml>
 #include <QQmlApplicationEngine>
 #include <QTime>
 #include <QException>
@@ -7,8 +9,7 @@
 #include <iostream>
 
 #include "TrayMenu.h"
-#include "IServiceProvider.hpp"
-#include "QServiceProvider.h"
+#include "Phabricator.h"
 
 void myMessageOutput(QtMsgType type, const QMessageLogContext &context, const QString &msg)
 {
@@ -49,14 +50,16 @@ void myMessageOutput(QtMsgType type, const QMessageLogContext &context, const QS
 int main(int argc, char *argv[])
 {
     qInstallMessageHandler(myMessageOutput);
+
+    QCoreApplication::setOrganizationName("TaskTimeTracker");
+    QCoreApplication::setApplicationName("TaskTimeTracker");
+    QCoreApplication::setApplicationVersion("0.1");
+
     QApplication app(argc, argv);
     QQmlApplicationEngine engine;
 
-    QCoreApplication::setOrganizationName("TTimeTracker");
-    QCoreApplication::setApplicationName("TimeTracker");
-    QCoreApplication::setApplicationVersion("0.1");
+    qmlRegisterType<Providers::Phabricator::ServiceProvider>("Phabricator", 1, 0, "Phabricator");
 
-    qmlRegisterType<ServiceProvider::QmlWrapper>("PluginManager", 1, 0, "PluginManager");
     engine.load(QUrl(QStringLiteral("qrc:/main.qml")));
 
     try {

@@ -10,7 +10,7 @@
 # include "StringSetting.h"
 # include "TimerEvent.h"
 
-namespace ServiceProvider {
+namespace Providers {
     class QmlWrapper;
 
     class Interface {
@@ -34,7 +34,7 @@ namespace ServiceProvider {
 
         virtual bool setTasks(TaskListPtr) = 0;
         virtual TaskListPtr getTasks() = 0;
-        virtual void getTasksAsync(ServiceProvider::QmlWrapper *) = 0;
+        virtual void getTasksAsync(Providers::QmlWrapper *) = 0;
 
         virtual bool setSettings(SettingListPtr) = 0;
         virtual SettingListPtr getSettings() = 0;

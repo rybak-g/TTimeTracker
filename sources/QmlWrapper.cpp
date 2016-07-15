@@ -1,52 +1,62 @@
 
-#include <iostream>
+#include <QDebug>
 #include <QJsonArray>
 #include <QJsonObject>
-#include "QServiceProvider.h"
 
-namespace ServiceProvider {
+#include "QmlWrapper.h"
+#include "Phabricator.h"
+
+namespace Providers {
 
     QmlWrapper::QmlWrapper(QObject *root)
         : QObject(root)
         , _sp(0)
-        , _qmlList(nullptr){
+        , _qmlList(nullptr)
+    {
     }
 
     QmlWrapper::QmlWrapper(const QmlWrapper & other)
-        : QQuickItem(other.parentItem()) {
+        : QObject(other.parent())
+    {
         this->_sp = other._sp;
         setPluginDirectory(other._pluginDirectory);
     }
 
-    QmlWrapper::~QmlWrapper() {
+    QmlWrapper::~QmlWrapper()
+    {
         _manager.clear();
     }
 
-    Interface * QmlWrapper::getServiceProvider() {
+    Interface * QmlWrapper::getServiceProvider()
+    {
         return _sp;
     }
 
-    QmlWrapper & QmlWrapper::operator=(const QmlWrapper & other) {
+    QmlWrapper & QmlWrapper::operator=(const QmlWrapper & other)
+    {
         this->_sp = other._sp;
         setPluginDirectory(other._pluginDirectory);
         return *this;
     }
 
-    bool QmlWrapper::init() {
+    bool QmlWrapper::init()
+    {
         if (this->_sp) {
             return this->_sp->init();
         }
         return true;
     }
 
-    bool QmlWrapper::cleanup() {
+    bool QmlWrapper::cleanup()
+    {
         if (this->_sp) {
             return this->_sp->cleanup();
         }
         return true;
     }
 
-    QJsonArray QmlWrapper::getTasks() {
+    QJsonArray QmlWrapper::getTasks()
+    {
         QJsonArray qmlList;
         if (this->_sp) {
             Interface::TaskListPtr taskList = _sp->getTasks();
@@ -104,20 +114,20 @@ namespace ServiceProvider {
         return this->_pluginDirectory;
     }
 
-    bool QmlWrapper::loadServiceProvider(const QString & providerId) {
-        if (_sp) {
-            _sp->cleanup();
-        }
-        if (!(_sp = _manager.getInstance<ServiceProvider::Interface>(providerId.toStdString().c_str()))) {
-            return false;
-        }
+    bool QmlWrapper::loadServiceProvider(const QString & /* providerId */) {
+//        if (_sp) {
+//            _sp->cleanup();
+//        }
+//        if (!(_sp = _manager.getInstance<ServiceProvider::Interface>(providerId.toStdString().c_str()))) {
+//            return false;
+//        }
         return true;
     }
 
     bool QmlWrapper::setPluginDirectory(const QString & path) {
+        qDebug() << "setPluginDirectory(): " << path;
         if (_pluginDirectory != path) {
             this->_pluginDirectory = path;
-            qDebug() << "setPluginDirectory(): " << path;
             emit pluginDirectoryChanged();
         }
         return true;

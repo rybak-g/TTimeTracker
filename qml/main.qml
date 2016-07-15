@@ -3,14 +3,14 @@ import QtQuick.Controls 1.3
 import QtQuick.Window 2.2
 import QtQuick.Dialogs 1.2
 import QtQuick.Controls.Styles 1.2
-import PluginManager 1.0
+import Phabricator 1.0
 
 ApplicationWindow {
     id: window
 
     property int baseHeight: 40
     property int baseWidth: 480
-    property int maxHeight: 400
+    property int maxHeight: Screen.height/2
 
     width: baseWidth
     height: baseHeight
@@ -266,12 +266,13 @@ ApplicationWindow {
         color: "transparent"
         height: window.baseHeight
         ///////////////////////////////////////////////////////////////
-        ///////////////////////////////////////////////////////////////
+        ///////////////////////////////////////////////////////////////`
         //
         ///////////////////////////////////////////////////////////////
         ///////////////////////////////////////////////////////////////
         TextInput {
             id: taskInput
+
             anchors {
                 fill: parent
                 topMargin: 2
@@ -283,7 +284,183 @@ ApplicationWindow {
             font {
                 pixelSize: parent.height*0.4
             }
+            enabled: !startStopButton.checked
+            onFocusChanged: console.log("focus")
         }
+    }
+    ///////////////////////////////////////////////////////////////
+    ///////////////////////////////////////////////////////////////
+    //
+    ///////////////////////////////////////////////////////////////
+    ///////////////////////////////////////////////////////////////
+    Item {
+        id: searchPanel
+
+        visible: state === "toggled"
+        states: [
+            State {
+                name: "toggled"
+                when: taskInput.focus
+                PropertyChanges { target: window; height: maxHeight; }
+            },
+            State {
+                name: ""
+                when: !taskInput.focus
+                PropertyChanges { target: window; height: baseHeight; }
+            }
+        ]
+        anchors {
+            top: taskInputContainer.bottom
+            right: parent.right
+            left: parent.left
+            bottom: parent.bottom
+        }
+        clip: true
+        ///////////////////////////////////////////////////////////////
+        ///////////////////////////////////////////////////////////////
+        //
+        ///////////////////////////////////////////////////////////////
+        ///////////////////////////////////////////////////////////////
+        Rectangle {
+            id: sliderContainer
+
+            height: 12
+            color: "#444"
+            anchors {
+                right: parent.right
+                left: parent.left
+                bottom: parent.bottom
+            }
+            Rectangle {
+                color: "#DDDDDD"
+                height: 3
+                width: 3
+                radius: 1
+
+                anchors {
+                    top: centerDot.top
+                    bottom: centerDot.bottom
+                    right: centerDot.left
+                    rightMargin: 5
+                }
+            }
+            Rectangle {
+                id: centerDot
+
+                color: "#DDDDDD"
+                height: 3
+                width: 3
+                radius: 1
+
+                anchors.centerIn: parent
+            }
+            Rectangle {
+                color: "#DDDDDD"
+                height: 3
+                width: 3
+                radius: 1
+
+                anchors {
+                    top: centerDot.top
+                    bottom: centerDot.bottom
+                    left: centerDot.right
+                    leftMargin: 5
+                }
+            }
+        }
+        ///////////////////////////////////////////////////////////////
+        ///////////////////////////////////////////////////////////////
+        //
+        ///////////////////////////////////////////////////////////////
+        ///////////////////////////////////////////////////////////////
+        ListView {
+            id: taskView
+
+            focus: true
+            clip: true
+            anchors {
+                top: parent.top
+                left: parent.left
+                right: parent.right
+                bottom: sliderContainer.top
+            }
+            model: ListModel { id: tasksModel }
+            Component {
+                id: taskDelegate
+
+                Rectangle {
+                    color: taskView.currentIndex === index ? "#88888888" : "#ddd"
+                    height: 50
+                    width: taskView.width
+                    Rectangle {
+                        id: objectNameTextContainer
+
+                        color: "#AAFFFFFF"
+                        anchors {
+                            left: parent.left
+                            top: parent.top
+                            bottom: parent.bottom
+                        }
+                        width: timerContainer.width+1
+                        Rectangle {
+                            color: manager.colorsHex[model.priorityColor]
+                            anchors {
+                                top: parent.top
+                                left: parent.left
+                                bottom: parent.bottom
+                            }
+                            width: 10
+                        }
+
+                        Text {
+                            id: objectNameText
+                            text: model.objectName
+                            anchors {
+                                left: parent.left
+                                right: parent.right
+                                top: parent.top
+                                bottom: parent.bottom
+                                leftMargin: 10
+                            }
+                            verticalAlignment: Text.AlignVCenter
+                            horizontalAlignment: Text.AlignHCenter
+                            color: "#666666"
+                            font.pointSize: 12
+                        }
+                    }
+                    Text {
+                        text: model.title
+                        anchors {
+                            left: objectNameTextContainer.right
+                            top: parent.top
+                            right: parent.right
+                            leftMargin: height/2
+                        }
+                        verticalAlignment: Text.AlignVCenter
+                        elide: Text.ElideRight
+                        height: parent.height*2/3
+                        font.pointSize: 11
+                        font.bold: true
+                        color: "#444444"
+                    }
+
+                    MouseArea {
+                        id: marea
+
+                        anchors.fill: parent
+                        hoverEnabled: true
+                        onEntered: taskView.currentIndex = model.index
+                        onClicked: {
+                            taskInput.text = model.objectName
+                            taskInput.focus = false
+                        }
+                    }
+                    clip: true
+                }
+            }
+            delegate: taskDelegate
+        }
+
     }
     ///////////////////////////////////////////////////////////////
     ///////////////////////////////////////////////////////////////
@@ -311,14 +488,29 @@ ApplicationWindow {
             running = false
         }
     }
-    PluginManager {
+
+    Phabricator {
         id: manager
 
-        pluginDirectory: "C:/"
-        Component.onCompleted: {
-            manager.refreshPluginList();
-            manager.loadServiceProvider("Phabricator");
+        property var colorsHex: {
+            "sky": "#3498DB",
+            "violet": "#8E44AD",
+            "red": "#C0392B",
+            "yellow": "#F1C40F"
+        }
+
+        onCurrentUserChanged: {
             manager.getTasksAsync();
+        }
+
+        onCurrentTasksChanged: {
+            for (var i = 0; i < currentTasks.length; ++i) {
+                tasksModel.append(currentTasks[i]);
+            }
+        }
+
+        Component.onCompleted: {
+            manager.getUserInfosAsync();
         }
     }
 }
